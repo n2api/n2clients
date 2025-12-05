@@ -1,0 +1,95 @@
+/* tslint:disable */
+/* eslint-disable */
+{{>licenseInfo}}
+
+{{^withSeparateModelsAndApi}}
+import type { Configuration } from './configuration{{importFileExtension}}';
+import type { AxiosPromise, AxiosInstance, RawAxiosRequestConfig } from 'axios';
+import globalAxios from 'axios';
+{{#withNodeImports}}
+// URLSearchParams not necessarily used
+// @ts-ignore
+import { URL, URLSearchParams } from 'url';
+{{#multipartFormData}}
+import FormData from 'form-data'
+{{/multipartFormData}}
+{{/withNodeImports}}
+// Some imports not used depending on template conditions
+// @ts-ignore
+import { DUMMY_BASE_URL, assertParamExists, setApiKeyToObject, setBasicAuthToObject, setBearerAuthToObject, setOAuthToObject, setSearchParams, serializeDataIfNeeded, toPathString, createRequestFunction } from './common{{importFileExtension}}';
+import type { RequestArgs } from './base{{importFileExtension}}';
+// @ts-ignore
+import { BASE_PATH, COLLECTION_FORMATS, BaseAPI, RequiredError, operationServerMap } from './base{{importFileExtension}}';
+
+{{#models}}
+{{#model}}{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{#oneOf}}{{#-first}}{{>modelOneOf}}{{/-first}}{{/oneOf}}{{^isEnum}}{{^oneOf}}{{>modelGeneric}}{{/oneOf}}{{/isEnum}}{{/model}}
+{{/models}}
+
+{{#apiInfo}}{{#apis}}
+{{>apiInner}}
+
+{{/apis}}{{/apiInfo}}
+
+{{!-- ========================================================= --}}
+{{!-- Add unified Client class that wraps all individual APIs --}}
+{{!-- ========================================================= --}}
+
+export class Client {
+  configuration: Configuration;
+  axios: AxiosInstance;
+
+  {{#apiInfo}}{{#apis}}
+  /** Instance of {{classname}} */
+  {{classVarName}}: {{classname}};
+  {{/apis}}{{/apiInfo}}
+
+  constructor(
+    configuration: Configuration,
+    axios: AxiosInstance = globalAxios
+  ) {
+    this.configuration = configuration;
+    this.axios = axios;
+
+    {{#apiInfo}}{{#apis}}
+    this.{{classVarName}} = new {{classname}}(configuration, BASE_PATH, this.axios);
+    {{/apis}}{{/apiInfo}}
+  }
+}
+{{/withSeparateModelsAndApi}}
+
+{{#withSeparateModelsAndApi}}
+{{#apiInfo}}{{#apis}}{{#operations}}export * from './{{tsApiPackage}}/{{classFilename}}{{importFileExtension}}';
+{{/operations}}{{/apis}}{{/apiInfo}}
+
+{{!-- ========================================================= --}}
+{{!-- Add unified Client class when using separated APIs --}}
+{{!-- ========================================================= --}}
+import { Configuration } from './configuration{{importFileExtension}}';
+import globalAxios, { AxiosInstance } from 'axios';
+
+{{#apiInfo}}{{#apis}}
+import { {{classname}} } from './{{tsApiPackage}}/{{classFilename}}{{importFileExtension}}';
+{{/apis}}{{/apiInfo}}
+
+export class Client {
+  configuration: Configuration;
+  axios: AxiosInstance;
+
+  {{#apiInfo}}{{#apis}}
+  /** Instance of {{classname}} */
+  {{classVarName}}: {{classname}};
+  {{/apis}}{{/apiInfo}}
+
+  constructor(
+    configuration: Configuration,
+    axios: AxiosInstance = globalAxios
+  ) {
+    this.configuration = configuration;
+    this.axios = axios;
+
+    {{#apiInfo}}{{#apis}}
+    this.{{classVarName}} = new {{classname}}(configuration, BASE_PATH, this.axios);
+    {{/apis}}{{/apiInfo}}
+  }
+}
+{{/withSeparateModelsAndApi}}
