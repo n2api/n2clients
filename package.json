@@ -1,0 +1,30 @@
+{
+  "name": "n2clients",
+  "version": "0.0.1",
+  "description": "Generated API clients for n2api.io",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "openapi-generator-cli": "openapi-generator-cli",
+    "genclient:typescript-axios": "npm run openapi-generator-cli -- generate -i n2api.yaml -g typescript-axios -t templates/typescript-axios -o clients/axios-client --skip-validate-spec --git-user-id=n2api --git-repo-id=axios-client --additional-properties=supportsES6=true,modelPropertyNaming=original,npmRepository=https://npm.pkg.github.com/n2api/,npmName=@n2api/axios-client,npmVersion=0.0.1",
+    "testclient:typescript-axios": "jest /clients/axios-client-tests --config clients/axios-client-tests/jest.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n2api/axios-client.git"
+  },
+  "author": "Tim Neumann",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/n2api/axios-client/issues"
+  },
+  "homepage": "https://github.com/n2api/axios-client#readme",
+  "devDependencies": {
+    "@openapitools/openapi-generator-cli": "^2.25.2",
+    "@types/jest": "^30.0.0"
+  },
+  "dependencies": {
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.6"
+  }
+}
