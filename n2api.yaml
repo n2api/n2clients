@@ -1,0 +1,4258 @@
+openapi: 3.0.0
+paths:
+  /auth/login:
+    post:
+      description: Login with *username* and *password*. Returns an access token.
+      operationId: AuthController_login_4otw64
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Login
+      tags:
+        - Authentication
+  /auth/refresh:
+    post:
+      operationId: AuthController_refresh_hq9r5i
+      parameters: []
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+  /auth/company_token:
+    get:
+      operationId: AuthController_getCompanyToken_8bpz6u
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+    post:
+      operationId: AuthController_createCompanyToken_k3gngq
+      parameters: []
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: AuthController_deleteCompanyToken_u6zccl
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+  /auth/session_token:
+    post:
+      operationId: AuthController_getSessionToken_rbwd43
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionTokenDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+  /auth/session_token/verify:
+    post:
+      operationId: AuthController_verifySessionToken_qkbht6
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SessionTokenVerifyDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+  /auth/user:
+    get:
+      operationId: AuthController_getHello_r0h1ua
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Authentication
+      security:
+        - bearerAuth: []
+  /activeagent/campaigns:
+    post:
+      operationId: CampaignsController_create_lsx4bk
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCampaignDto'
+      responses:
+        '201':
+          description: >-
+            Campaign created successfuly. The created campaign is returned in
+            the response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCampaignDto'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    get:
+      operationId: CampaignsController_findAll_vkjjqn
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          description: >-
+            List of child resources to include in the response. Example: set
+            childResources to Targeting and AdSet to get a list of Campaigns
+            with their Targetings and AdSets (and the AdSets Targetings)
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: status
+          required: false
+          in: query
+          description: >-
+            Status of the Campaigns to return. Example: set status to Running to
+            get a list of running Campaigns.
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose campaigns to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of Campaign IDs to include in the response. Requires platform
+            and customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/campaigns/translate:
+    post:
+      operationId: CampaignsController_translate_ecvpl4
+      parameters:
+        - name: childResources
+          required: true
+          in: query
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActiveAgentOrderDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/campaigns/{id}:
+    get:
+      operationId: CampaignsController_findOne_32heet
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: childResources
+          required: true
+          in: query
+          description: >-
+            Comma separated list of child resources to include in the response.
+            Possible values: Campaign, AdSet, Ad, Targeting
+          schema:
+            type: string
+        - name: countCalls
+          required: false
+          in: query
+          description: >-
+            If true, the number of calls made to the API is returned in the
+            response body.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: CampaignsController_update_058yv3
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCampaignDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Campaign'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: CampaignsController_remove_wx2dfy
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/campaigns/{id}/report:
+    get:
+      operationId: CampaignsController_getReport_11en29
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: start
+          required: false
+          in: query
+          description: >-
+            Start date of the report. This is the "earlier" of the two dates.
+            Example: set start to 2021-01-01 and end to 2021-01-31 to get a
+            report for the month of January 2021.
+          schema:
+            type: string
+        - name: end
+          required: false
+          in: query
+          description: >-
+            End date of the report. This is the "later" of the two dates.
+            Example: set start to 2021-01-01 and end to 2021-01-31 to get a
+            report for the month of January 2021.
+          schema:
+            type: string
+        - name: granularity
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: dimensions
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: fields
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: filters
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: callCounter
+          required: false
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/adaccounts:
+    put:
+      operationId: AdAccountsController_sync_r5ln7z
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/adaccounts/customer:
+    put:
+      operationId: AdAccountsController_syncCustomer_q7yxiw
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/{resource}/{resourceId}/targeting/{targetingKind}:
+    get:
+      operationId: TargetingController_find_5148tb
+      parameters:
+        - name: resource
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: targetingKind
+          required: true
+          in: path
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: TargetingController_delete_3swtka
+      parameters:
+        - name: resource
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: targetingKind
+          required: true
+          in: path
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: number
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/{resource}/{resourceId}/targeting:
+    post:
+      operationId: TargetingController_create_36thcg
+      parameters:
+        - name: resource
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTargetingDto'
+      responses:
+        '201':
+          description: >-
+            Targeting created successfully. The created targeting is returned in
+            the response body.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ZipcodeGeoTargetingDto'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    put:
+      operationId: TargetingController_updateOrCreate_2h20li
+      parameters:
+        - name: resource
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTargetingDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/adsets:
+    post:
+      operationId: AdsetsController_create_7ajntd
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdsetDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ActiveAgentAdSetAdapter'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    get:
+      operationId: AdsetsController_findAll_48b5vs
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose AdSets to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of AdSet IDs to include in the response. Requires platform and
+            customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdSet'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/adsets/{id}:
+    get:
+      operationId: AdsetsController_findOne_ffcces
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: childResources
+          required: true
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AdSet'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: AdsetsController_update_31j4du
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdsetDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: AdsetsController_remove_jnaag7
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/reporting:
+    get:
+      operationId: ReportingController_getReport_oj3kae
+      parameters:
+        - name: start
+          required: false
+          in: query
+          description: >-
+            Start date of the report. This is the "earlier" of the two dates.
+            Example: set start to 2021-01-01 and end to 2021-01-31 to get a
+            report for the month of January 2021.
+          schema:
+            type: string
+        - name: end
+          required: false
+          in: query
+          description: >-
+            End date of the report. This is the "later" of the two dates.
+            Example: set start to 2021-01-01 and end to 2021-01-31 to get a
+            report for the month of January 2021.
+          schema:
+            type: string
+        - name: granularity
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: dimensions
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: fields
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: filters
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: callCounter
+          required: false
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/ads:
+    get:
+      operationId: AdsController_findAll_v0i00i
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          description: >-
+            List of child resources to include in the response. Example: set
+            childResources to Targeting to get a list of Ads with their
+            Targetings
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: status
+          required: false
+          in: query
+          description: >-
+            Status of the Ads to return. Example: set status to Running to get a
+            list of running Ads
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose Ads to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of Ad IDs to include in the response. Requires platform and
+            customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ad'
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/ads/{id}:
+    get:
+      operationId: AdsController_findOne_kx2rz2
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: childResources
+          required: true
+          in: query
+          description: >-
+            Comma separated list of child resources to include in the response.
+            Possible values: Campaign, AdSet, Ad, Targeting
+          schema:
+            type: string
+        - name: countCalls
+          required: false
+          in: query
+          description: >-
+            If true, the number of calls made to the API is returned in the
+            response body.
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/credentials/customer:
+    post:
+      operationId: CredentialsController_createCustomer_6ix19k
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActiveAgentCreateCredentialDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/credentials:
+    put:
+      operationId: CredentialsController_update_u7kaen
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ActiveAgentCreateCredentialDto'
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    get:
+      operationId: CredentialsController_findAll_hu0kra
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: CredentialsController_delete_lt023k
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /companies:
+    get:
+      operationId: CompaniesController_getCompany_2lyej4
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Companies
+      security:
+        - bearerAuth: []
+  /companies/redirect_uri:
+    get:
+      operationId: CompaniesController_getRedirectUri_f0i71s
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedirectUriDTO'
+      tags:
+        - Companies
+      security:
+        - bearerAuth: []
+    put:
+      operationId: CompaniesController_setRedirectUri_fcrzml
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedirectUriDTO'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedirectUriDTO'
+      tags:
+        - Companies
+      security:
+        - bearerAuth: []
+  /activeagent/{resource}/{resourceId}/settings:
+    put:
+      operationId: SettingsController_update_6xv72v
+      parameters:
+        - name: resource
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: resourceId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateSettingDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /activeagent/{customerId}/raw/{externalPath}:
+    get:
+      operationId: RawController_rawRequest_5ryooe_get
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the ActiveAgent API request.
+          schema:
+            example: latest/users/current
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    post:
+      operationId: RawController_rawRequest_2jfj97_post
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the ActiveAgent API request.
+          schema:
+            example: latest/users/current
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    put:
+      operationId: RawController_rawRequest_gpk4z6_put
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the ActiveAgent API request.
+          schema:
+            example: latest/users/current
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: RawController_rawRequest_o6zyiq_delete
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the ActiveAgent API request.
+          schema:
+            example: latest/users/current
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: RawController_rawRequest_7bmyr4_patch
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the ActiveAgent API request.
+          schema:
+            example: latest/users/current
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    options:
+      operationId: RawController_rawRequest_t080my_options
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the ActiveAgent API request.
+          schema:
+            example: latest/users/current
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    head:
+      operationId: RawController_rawRequest_7qnyhr_head
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the ActiveAgent API request.
+          schema:
+            example: latest/users/current
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+    search:
+      operationId: RawController_rawRequest_9c02hm_search
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the ActiveAgent API request.
+          schema:
+            example: latest/users/current
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - ActiveAgent
+      security:
+        - bearerAuth: []
+  /customers:
+    get:
+      operationId: CustomersController_findAll_kggoor
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+    post:
+      operationId: CustomersController_createCustomer_2cjlz2
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCustomerDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+  /customers/platforms:
+    get:
+      operationId: CustomersController_findAllWithPlatforms_xzeg6k
+      parameters:
+        - name: customers
+          required: false
+          in: query
+          description: The ids of the customers to fetch.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+  /customers/{id}:
+    get:
+      operationId: CustomersController_findOne_v9u2yc
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: CustomersController_deleteCustomer_00kwoh
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: The id of the customer to delete.
+          schema:
+            example: 123e4567-e89b-12d3-a456-426614174000
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+  /customers/{id}/connect:
+    get:
+      description: >-
+        Generate a connect URL for a customer. This URL will redirect the
+        customer to the platform's authentication page. If no platform is
+        specified, the user will be presented with a list of platforms to choose
+        from.
+      operationId: getConnectCustomerUrl
+      parameters:
+        - name: id
+          required: true
+          in: path
+          description: The id (UUID) of the customer to connect.
+          schema:
+            example: 123e4567-e89b-12d3-a456-426614174000
+            type: string
+        - name: platform
+          required: false
+          in: query
+          description: >-
+            The platform to connect the customer to. If undefined, users will be
+            presented with a list of platforms to choose from.
+          schema:
+            enum:
+              - ActiveAgent
+              - Facebook
+              - GoogleAds
+              - TheTradeDesk
+              - Pinterest
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerConnectUrlDTO'
+      summary: Generate connect URL for a customer
+      tags:
+        - Customers
+      security:
+        - bearerAuth: []
+  /pinterest/auth:
+    post:
+      description: >-
+        Convert a Pinterest authorization code into access and refresh tokens.
+        This route requires a customer session token for authentication.
+        Requests will fail with a regular token.
+      operationId: convertAuthCode
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePinterestAuthDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Convert Pinterest auth code
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+  /pinterest/credentials/customer:
+    post:
+      description: >-
+        Store Pinterest credentials for a customer. This requires a customer
+        session token for authentication. Using a regular token will fail.
+      operationId: storePinterestCustomerCredentials
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PinterestCreateCredentialDto'
+      responses:
+        '201':
+          description: ''
+      summary: Store Pinterest credentials for a customer
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+  /pinterest/credentials/{customerId}:
+    delete:
+      description: >-
+        Delete all Pinterest credentials for a given customer and its related
+        synced ad accounts data. Calling this method will not delete data on
+        Pinterest itself.
+      operationId: deletePinterestCustomerCredentials
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: The ID of the customer whose credentials are to be deleted.
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Customer credentials deleted successfully.
+      summary: Delete Pinterest credentials for a customer
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+  /pinterest/{customerId}/raw/{externalPath}:
+    get:
+      description: >-
+        This route proxies raw requests to the Pinterest API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Pinterest Ads API request.
+          schema:
+            example: v5/ad_accounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      summary: Proxy raw requests to the Pinterest API
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+    post:
+      description: >-
+        This route proxies raw requests to the Pinterest API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Pinterest Ads API request.
+          schema:
+            example: v5/ad_accounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      summary: Proxy raw requests to the Pinterest API
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+    put:
+      description: >-
+        This route proxies raw requests to the Pinterest API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Pinterest Ads API request.
+          schema:
+            example: v5/ad_accounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      summary: Proxy raw requests to the Pinterest API
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+    delete:
+      description: >-
+        This route proxies raw requests to the Pinterest API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Pinterest Ads API request.
+          schema:
+            example: v5/ad_accounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      summary: Proxy raw requests to the Pinterest API
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+    patch:
+      description: >-
+        This route proxies raw requests to the Pinterest API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Pinterest Ads API request.
+          schema:
+            example: v5/ad_accounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      summary: Proxy raw requests to the Pinterest API
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+    options:
+      description: >-
+        This route proxies raw requests to the Pinterest API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Pinterest Ads API request.
+          schema:
+            example: v5/ad_accounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      summary: Proxy raw requests to the Pinterest API
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+    head:
+      description: >-
+        This route proxies raw requests to the Pinterest API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Pinterest Ads API request.
+          schema:
+            example: v5/ad_accounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      summary: Proxy raw requests to the Pinterest API
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+    search:
+      description: >-
+        This route proxies raw requests to the Pinterest API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Pinterest Ads API request.
+          schema:
+            example: v5/ad_accounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      summary: Proxy raw requests to the Pinterest API
+      tags:
+        - Pinterest
+      security:
+        - bearerAuth: []
+  /googleads/campaigns:
+    post:
+      operationId: CampaignsController_create_wi0t68
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCampaignDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    get:
+      operationId: CampaignsController_findAll_jazafv
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          description: >-
+            List of child resources to include in the response. Example: set
+            childResources to Targeting and AdSet to get a list of Campaigns
+            with their Targetings and AdSets (and the AdSets Targetings)
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: status
+          required: false
+          in: query
+          description: >-
+            Status of the Campaigns to return. Example: set status to Running to
+            get a list of running Campaigns.
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose campaigns to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of Campaign IDs to include in the response. Requires platform
+            and customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/campaigns/{id}:
+    get:
+      operationId: CampaignsController_findOne_u27hua
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: CampaignsController_update_40ll7r
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCampaignDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: CampaignsController_remove_wvf99p
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/credentials/customer:
+    post:
+      operationId: CredentialsController_createCustomer_8qpv6w
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleAdsCreateCredentialDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/credentials:
+    get:
+      operationId: CredentialsController_findAll_9quhk2
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/{customerId}/credentials:
+    delete:
+      operationId: CredentialsController_deleteCustomerCredentials_siel2b
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: The id (UUID) of the customer whose credentials should be deleted.
+          schema:
+            example: 123e4567-e89b-12d3-a456-426614174000
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/ads:
+    post:
+      operationId: AdsController_create_5j1f9u
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    get:
+      operationId: AdsController_findAll_erdkms
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          description: >-
+            List of child resources to include in the response. Example: set
+            childResources to Targeting and AdSet to get a list of Campaigns
+            with their Targetings and AdSets (and the AdSets Targetings)
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: status
+          required: false
+          in: query
+          description: >-
+            Status of the Campaigns to return. Example: set status to Running to
+            get a list of running Campaigns.
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose campaigns to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of Campaign IDs to include in the response. Requires platform
+            and customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ad'
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/ads/{id}:
+    get:
+      operationId: AdsController_findOne_nutbxl
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: AdsController_update_t99o7f
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: AdsController_remove_ahonpn
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/adsets:
+    post:
+      operationId: AdsetsController_create_x8svw5
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAdsetDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    get:
+      operationId: AdsetsController_findAll_9d7h31
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          description: >-
+            List of child resources to include in the response. Example: set
+            childResources to Targeting and AdSet to get a list of Campaigns
+            with their Targetings and AdSets (and the AdSets Targetings)
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: status
+          required: false
+          in: query
+          description: >-
+            Status of the Campaigns to return. Example: set status to Running to
+            get a list of running Campaigns.
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose campaigns to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of Campaign IDs to include in the response. Requires platform
+            and customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdSet'
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/adsets/{id}:
+    get:
+      operationId: AdsetsController_findOne_3q406b
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: AdsetsController_update_qb6632
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdsetDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: AdsetsController_remove_iariyn
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/auth:
+    post:
+      operationId: AuthController_getAccessToken_69qgkv
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateGoogleAdsAuthDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/{customerId}/adaccounts:
+    put:
+      operationId: AdAccountsController_syncCustomer_2j6xn9
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/adaccounts:
+    get:
+      operationId: AdAccountsController_findAll_mln5nd
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GoogleAdsAdAccountWrapper'
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /googleads/{customerId}/raw/{externalPath}:
+    get:
+      operationId: RawController_rawRequest_7vtbrn_get
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Google Ads API request.
+          schema:
+            example: v21/customers:listAccessibleCustomers
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    post:
+      operationId: RawController_rawRequest_60eqvd_post
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Google Ads API request.
+          schema:
+            example: v21/customers:listAccessibleCustomers
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    put:
+      operationId: RawController_rawRequest_h2cub1_put
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Google Ads API request.
+          schema:
+            example: v21/customers:listAccessibleCustomers
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: RawController_rawRequest_afsh4h_delete
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Google Ads API request.
+          schema:
+            example: v21/customers:listAccessibleCustomers
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: RawController_rawRequest_wg2qdk_patch
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Google Ads API request.
+          schema:
+            example: v21/customers:listAccessibleCustomers
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    options:
+      operationId: RawController_rawRequest_f0ip1p_options
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Google Ads API request.
+          schema:
+            example: v21/customers:listAccessibleCustomers
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    head:
+      operationId: RawController_rawRequest_d0r8ra_head
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Google Ads API request.
+          schema:
+            example: v21/customers:listAccessibleCustomers
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+    search:
+      operationId: RawController_rawRequest_dw9ix0_search
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Google Ads API request.
+          schema:
+            example: v21/customers:listAccessibleCustomers
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - GoogleAds
+      security:
+        - bearerAuth: []
+  /facebook/campaigns:
+    get:
+      operationId: CampaignsController_findAll_z5jbts
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          description: >-
+            List of child resources to include in the response. Example: set
+            childResources to Targeting and AdSet to get a list of Campaigns
+            with their Targetings and AdSets (and the AdSets Targetings)
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: status
+          required: false
+          in: query
+          description: >-
+            Status of the Campaigns to return. Example: set status to Running to
+            get a list of running Campaigns.
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose campaigns to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of Campaign IDs to include in the response. Requires platform
+            and customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/auth:
+    post:
+      operationId: AuthController_getAccessToken_t41rff
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFacebookAuthDto'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/credentials/customer:
+    post:
+      operationId: CredentialsController_createCustomer_lqwsc5
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FacebookCreateCredentialDto'
+      responses:
+        '201':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/credentials:
+    get:
+      operationId: CredentialsController_findAll_urmvrv
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/credentials/isConnected:
+    get:
+      operationId: CredentialsController_isConnected_tfvw6f
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/credentials/{customerId}:
+    delete:
+      operationId: CredentialsController_deleteCustomer_gkcpsz
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/adsets:
+    get:
+      operationId: AdSetsController_findAll_geus8d
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose AdSets to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of AdSet IDs to include in the response. Requires platform and
+            customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdSet'
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/adsets/{id}:
+    get:
+      operationId: AdSetsController_findOne_7d8j59
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: AdSetsController_update_505b7c
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateAdsetDto'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: AdSetsController_remove_qpjoni
+      parameters:
+        - name: id
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: string
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /adaccounts:
+    get:
+      operationId: AdAccountsController_findAll_1f63wu
+      parameters:
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose AdAccounts to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+      tags:
+        - AdAccounts
+      security:
+        - bearerAuth: []
+  /facebook/adaccounts/customer:
+    put:
+      operationId: AdAccountsController_syncCustomer_kpkzo2
+      parameters: []
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/adaccounts:
+    get:
+      operationId: AdAccountsController_findAll_0549lm
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FacebookAdAccountWrapper'
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /facebook/{customerId}/raw/{externalPath}:
+    get:
+      operationId: RawController_rawRequest_2tg1sh_get
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Facebook Ads API request.
+          schema:
+            example: v22.0/me/adaccounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    post:
+      operationId: RawController_rawRequest_f1g1cg_post
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Facebook Ads API request.
+          schema:
+            example: v22.0/me/adaccounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    put:
+      operationId: RawController_rawRequest_1fu5v3_put
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Facebook Ads API request.
+          schema:
+            example: v22.0/me/adaccounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    delete:
+      operationId: RawController_rawRequest_hkcfxt_delete
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Facebook Ads API request.
+          schema:
+            example: v22.0/me/adaccounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    patch:
+      operationId: RawController_rawRequest_g9ig2b_patch
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Facebook Ads API request.
+          schema:
+            example: v22.0/me/adaccounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    options:
+      operationId: RawController_rawRequest_u28faw_options
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Facebook Ads API request.
+          schema:
+            example: v22.0/me/adaccounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    head:
+      operationId: RawController_rawRequest_udhoym_head
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Facebook Ads API request.
+          schema:
+            example: v22.0/me/adaccounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+    search:
+      operationId: RawController_rawRequest_riygfr_search
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: The external path for the Facebook Ads API request.
+          schema:
+            example: v22.0/me/adaccounts
+            type: string
+      responses:
+        '200':
+          description: ''
+      tags:
+        - Facebook
+      security:
+        - bearerAuth: []
+  /thetradedesk/credentials/customer:
+    post:
+      description: >-
+        Log in a customer to The Trade Desk using their *login* and *password*.
+        This will store their credentials securely for future use.
+      operationId: storeCustomerCredentials
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TheTradeDeskCreateCredentialsDto'
+      responses:
+        '201':
+          description: ''
+      summary: Login to The Trade Desk
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+  /thetradedesk/{customerId}/raw/{externalPath}:
+    get:
+      description: >-
+        This route proxies raw requests to the The Trade Desk API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: External API path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Proxy raw requests to the The Trade Desk API
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+    post:
+      description: >-
+        This route proxies raw requests to the The Trade Desk API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: External API path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Proxy raw requests to the The Trade Desk API
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+    put:
+      description: >-
+        This route proxies raw requests to the The Trade Desk API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: External API path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Proxy raw requests to the The Trade Desk API
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+    delete:
+      description: >-
+        This route proxies raw requests to the The Trade Desk API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: External API path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Proxy raw requests to the The Trade Desk API
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+    patch:
+      description: >-
+        This route proxies raw requests to the The Trade Desk API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: External API path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Proxy raw requests to the The Trade Desk API
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+    options:
+      description: >-
+        This route proxies raw requests to the The Trade Desk API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: External API path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Proxy raw requests to the The Trade Desk API
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+    head:
+      description: >-
+        This route proxies raw requests to the The Trade Desk API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: External API path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Proxy raw requests to the The Trade Desk API
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+    search:
+      description: >-
+        This route proxies raw requests to the The Trade Desk API, allowing for
+        dynamic endpoints and parameters.
+      operationId: rawRequest
+      parameters:
+        - name: customerId
+          required: true
+          in: path
+          description: Customer UUID
+          schema:
+            type: string
+        - name: externalPath
+          required: true
+          in: path
+          description: External API path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: object
+      summary: Proxy raw requests to the The Trade Desk API
+      tags:
+        - TheTradeDesk
+      security:
+        - bearerAuth: []
+  /campaigns:
+    get:
+      operationId: CampaignsController_getCampaigns_2qcanu
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          description: >-
+            List of child resources to include in the response. Example: set
+            childResources to Targeting and AdSet to get a list of Campaigns
+            with their Targetings and AdSets (and the AdSets Targetings)
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: status
+          required: false
+          in: query
+          description: >-
+            Status of the Campaigns to return. Example: set status to Running to
+            get a list of running Campaigns.
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose campaigns to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of Campaign IDs to include in the response. Requires platform
+            and customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Campaign'
+      tags:
+        - Campaigns
+      security:
+        - bearerAuth: []
+  /adsets:
+    get:
+      operationId: AdsetsController_getAdsets_jio5sh
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose AdSets to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of AdSet IDs to include in the response. Requires platform and
+            customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: status
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AdSet'
+      tags:
+        - AdSets
+      security:
+        - bearerAuth: []
+  /ads:
+    get:
+      operationId: AdsController_getAds_8yhkpx
+      parameters:
+        - name: childResources
+          required: false
+          in: query
+          description: >-
+            List of child resources to include in the response. Example: set
+            childResources to Targeting to get a list of Ads with their
+            Targetings
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - Campaign
+                - AdSet
+                - Ad
+                - Targeting
+                - AdAccount
+        - name: status
+          required: false
+          in: query
+          description: >-
+            Status of the Ads to return. Example: set status to Running to get a
+            list of running Ads
+          schema:
+            type: string
+            enum:
+              - ACTIVE
+              - RUNNING
+              - PAUSED
+              - UNKNOWN
+        - name: platforms
+          required: false
+          in: query
+          description: List of platforms to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+              enum:
+                - ActiveAgent
+                - Facebook
+                - GoogleAds
+                - TheTradeDesk
+                - Pinterest
+        - name: customers
+          required: false
+          in: query
+          description: List of Customer IDs whose Ads to include in the response.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: ids
+          required: false
+          in: query
+          description: >-
+            List of Ad IDs to include in the response. Requires platform and
+            customer to be set to a single value.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ad'
+      tags:
+        - Ads
+      security:
+        - bearerAuth: []
+  /reporting:
+    get:
+      operationId: ReportingController_getReport_ixk9wf
+      parameters:
+        - name: start
+          required: false
+          in: query
+          description: >-
+            Start date of the report. This is the "earlier" of the two dates.
+            Example: set start to 2021-01-01 and end to 2021-01-31 to get a
+            report for the month of January 2021.
+          schema:
+            type: string
+        - name: end
+          required: false
+          in: query
+          description: >-
+            End date of the report. This is the "later" of the two dates.
+            Example: set start to 2021-01-01 and end to 2021-01-31 to get a
+            report for the month of January 2021.
+          schema:
+            type: string
+        - name: granularity
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: dimensions
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: fields
+          required: true
+          in: query
+          schema:
+            type: string
+        - name: filters
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: callCounter
+          required: false
+          in: query
+          schema:
+            type: boolean
+        - name: platform
+          required: true
+          in: query
+          schema:
+            type: string
+            enum:
+              - ActiveAgent
+              - Facebook
+              - GoogleAds
+              - TheTradeDesk
+              - Pinterest
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+      tags:
+        - Reporting
+      security:
+        - bearerAuth: []
+info:
+  title: n2api
+  description: >-
+    This is the official API reference for the n_2 API. See docs.n2api.io for
+    more information.
+  version: '1.0'
+  contact: {}
+tags: []
+servers:
+  - url: https://api.n2api.io
+    description: Production server
+  - url: http://localhost:5001
+    description: Local server
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    LoginDto:
+      type: object
+      properties:
+        email:
+          type: string
+          description: The email of the user.
+          example: user@example.com
+        password:
+          type: string
+          description: The password of the user.
+          example: password123
+      required:
+        - email
+        - password
+    SessionTokenDto:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: The UUID of the customer.
+          example: abcdef01-2345-6789-abcd-ef0123456789
+      required:
+        - customerId
+    SessionTokenVerifyDto:
+      type: object
+      properties:
+        sessionToken:
+          type: string
+          description: The session token to be verified.
+          example: eyxxxxx.xxxxxx.xxxxxx
+      required:
+        - sessionToken
+    ZipcodeDto:
+      type: object
+      properties:
+        countryCode:
+          type: string
+        value:
+          type: string
+      required:
+        - countryCode
+        - value
+    ZipcodeGeoTargetingDto:
+      type: object
+      properties:
+        targetingKind:
+          default: PostalCodeGeoTargeting
+          enum:
+            - PostalCodeGeoTargeting
+            - CountryTargeting
+            - UserFrequencyCapping
+            - SocioDemographicTargeting
+            - InterestsTargeting
+            - SearchTermTargeting
+            - UrlTargeting
+            - UnknownTargeting
+          type: string
+        zipcodes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ZipcodeDto'
+      required:
+        - targetingKind
+        - zipcodes
+    FrequencyCappingDto:
+      type: object
+      properties:
+        targetingKind:
+          default: UserFrequencyCapping
+          enum:
+            - PostalCodeGeoTargeting
+            - CountryTargeting
+            - UserFrequencyCapping
+            - SocioDemographicTargeting
+            - InterestsTargeting
+            - SearchTermTargeting
+            - UrlTargeting
+            - UnknownTargeting
+          type: string
+        time:
+          type: number
+        requests:
+          type: number
+      required:
+        - targetingKind
+        - time
+        - requests
+    CreateAdDto:
+      type: object
+      properties: {}
+    CreateAdSetDto:
+      type: object
+      properties:
+        targetings:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ZipcodeGeoTargetingDto'
+              - $ref: '#/components/schemas/FrequencyCappingDto'
+        settings:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/MaximumCPMDto'
+              - $ref: '#/components/schemas/RealtimeBiddingStrategyDto'
+              - $ref: '#/components/schemas/PacingDto'
+              - $ref: '#/components/schemas/DailyBudgetDto'
+              - $ref: '#/components/schemas/MaximumDailyImpressionsDto'
+              - $ref: '#/components/schemas/KPIOptimizationDto'
+        channelKind:
+          enum:
+            - UNKNOWN
+            - MIXED
+            - DOOH
+            - SEARCH
+            - SOCIAL
+            - WEB_BANNER
+            - WEB_VIDEO
+            - AUDIO
+          type: string
+        name:
+          type: string
+        ads:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreateAdDto'
+      required:
+        - channelKind
+        - name
+    CreateCampaignDto:
+      type: object
+      properties: {}
+    RuntimeBudget:
+      type: object
+      properties:
+        startTime:
+          type: string
+        endTime:
+          type: string
+        budget:
+          type: number
+        clicks:
+          type: number
+        impressions:
+          type: number
+      required:
+        - startTime
+        - endTime
+        - budget
+        - clicks
+        - impressions
+    ActiveAgentOrderDto:
+      type: object
+      properties:
+        id:
+          type: number
+        advertiserId:
+          type: number
+        networkId:
+          type: number
+        campaignIds:
+          type: array
+          items:
+            type: number
+        name:
+          type: string
+        runtimeBudgets:
+          default: []
+          type: array
+          items:
+            $ref: '#/components/schemas/RuntimeBudget'
+        lastUpdate:
+          type: number
+        deleted:
+          type: boolean
+        advertiserMarginId:
+          type: number
+        agencyId:
+          type: number
+        calculatedDailyBudget:
+          type: number
+        calculatedDailyImpressions:
+          type: number
+        dailyBudget:
+          type: number
+        dailyClicks:
+          type: number
+        dailyImpressions:
+          type: number
+        dailyPacing:
+          type: boolean
+        footfallStoreConfigId:
+          type: number
+        pace:
+          type: number
+        runtimePacing:
+          type: boolean
+        runtimePacingFactor:
+          type: number
+        totalBudget:
+          type: number
+        totalClicks:
+          type: number
+        totalImpressions:
+          type: number
+      required:
+        - id
+        - advertiserId
+        - networkId
+        - campaignIds
+        - name
+        - runtimeBudgets
+        - lastUpdate
+        - deleted
+    Setting:
+      type: object
+      properties: {}
+    Ad:
+      type: object
+      properties:
+        platform:
+          enum:
+            - ActiveAgent
+            - Facebook
+            - GoogleAds
+            - TheTradeDesk
+            - Pinterest
+          type: string
+        name:
+          type: string
+        id:
+          type: string
+        adAccount:
+          type: string
+        channelKind:
+          type: string
+        settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Setting'
+        targetings:
+          type: array
+          items:
+            type: object
+        kind:
+          type: string
+        status:
+          enum:
+            - ACTIVE
+            - RUNNING
+            - PAUSED
+            - UNKNOWN
+          type: string
+      required:
+        - platform
+        - name
+        - id
+        - adAccount
+        - channelKind
+        - settings
+        - kind
+        - status
+    AdSet:
+      type: object
+      properties:
+        platform:
+          enum:
+            - ActiveAgent
+            - Facebook
+            - GoogleAds
+            - TheTradeDesk
+            - Pinterest
+          type: string
+        name:
+          type: string
+        id:
+          type: string
+        adAccount:
+          type: string
+        parentId:
+          type: string
+        channelKind:
+          type: string
+        settings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Setting'
+        targetings:
+          type: array
+          items:
+            type: object
+        ads:
+          type: array
+          items:
+            $ref: '#/components/schemas/Ad'
+        kind:
+          type: string
+        status:
+          enum:
+            - ACTIVE
+            - RUNNING
+            - PAUSED
+            - UNKNOWN
+          type: string
+      required:
+        - platform
+        - name
+        - id
+        - adAccount
+        - parentId
+        - channelKind
+        - settings
+        - kind
+        - status
+    Campaign:
+      type: object
+      properties:
+        platform:
+          enum:
+            - ActiveAgent
+            - Facebook
+            - GoogleAds
+            - TheTradeDesk
+            - Pinterest
+          type: string
+        id:
+          type: string
+        adAccount:
+          type: string
+        channelKind:
+          type: string
+        name:
+          type: string
+        advertiser:
+          type: string
+        lastUpdate:
+          type: number
+        status:
+          enum:
+            - ACTIVE
+            - RUNNING
+            - PAUSED
+            - UNKNOWN
+          type: string
+        adSets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AdSet'
+        settings:
+          type: array
+          items:
+            type: object
+        targetings:
+          type: array
+          items:
+            type: object
+        kind:
+          type: string
+      required:
+        - platform
+        - id
+        - adAccount
+        - channelKind
+        - name
+        - advertiser
+        - lastUpdate
+        - status
+        - settings
+        - kind
+    UpdateCampaignDto:
+      type: object
+      properties: {}
+    Report:
+      type: object
+      properties: {}
+    UrlTargetingDto:
+      type: object
+      properties:
+        targetingKind:
+          default: UrlTargeting
+          enum:
+            - PostalCodeGeoTargeting
+            - CountryTargeting
+            - UserFrequencyCapping
+            - SocioDemographicTargeting
+            - InterestsTargeting
+            - SearchTermTargeting
+            - UrlTargeting
+            - UnknownTargeting
+          type: string
+        urls:
+          type: array
+          items:
+            type: string
+      required:
+        - targetingKind
+        - urls
+    CreateTargetingDto:
+      type: object
+      properties:
+        targetings:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/ZipcodeGeoTargetingDto'
+              - $ref: '#/components/schemas/FrequencyCappingDto'
+              - $ref: '#/components/schemas/UrlTargetingDto'
+      required:
+        - targetings
+    CreateAdsetDto:
+      type: object
+      properties: {}
+    ActiveAgentAdSetAdapter:
+      type: object
+      properties: {}
+    UpdateAdsetDto:
+      type: object
+      properties: {}
+    ActiveAgentCreateCredentialDto:
+      type: object
+      properties:
+        username:
+          type: string
+          description: The username of the credential.
+          example: foo@bar.com
+        password:
+          type: string
+          description: The password of the credential.
+          example: password123
+      required:
+        - username
+        - password
+    RedirectUriDTO:
+      type: object
+      properties:
+        redirect_uri:
+          type: string
+          description: The redirect URI for the company.
+          example: https://example.com
+      required:
+        - redirect_uri
+    MaximumCPMDto:
+      type: object
+      properties:
+        settingType:
+          type: string
+          default: MaximumCPM
+          enum:
+            - DailyBudget
+            - TotalBudget
+            - Unknown
+            - Runtime
+            - MaximumCPM
+            - MaximumDailyImpressions
+            - MaximumLifetimeImpressions
+            - MediaSize
+            - Pacing
+            - RealtimeBiddingStrategy
+            - KPIOptimization
+            - BidCapping
+        maximumCpm:
+          type: number
+      required:
+        - settingType
+        - maximumCpm
+    RealtimeBiddingStrategyDto:
+      type: object
+      properties:
+        settingType:
+          type: string
+          default: RealtimeBiddingStrategy
+          enum:
+            - DailyBudget
+            - TotalBudget
+            - Unknown
+            - Runtime
+            - MaximumCPM
+            - MaximumDailyImpressions
+            - MaximumLifetimeImpressions
+            - MediaSize
+            - Pacing
+            - RealtimeBiddingStrategy
+            - KPIOptimization
+            - BidCapping
+        realtimeBiddingStrategy:
+          type: string
+          enum:
+            - Maxprice
+            - Floorprice
+            - IntervalBudgetOptimized
+            - LowestCostUncapped
+            - LowestCostCapped
+            - CostCapped
+            - Unknown
+      required:
+        - settingType
+        - realtimeBiddingStrategy
+    PacingDto:
+      type: object
+      properties:
+        settingType:
+          type: string
+          default: Pacing
+          enum:
+            - DailyBudget
+            - TotalBudget
+            - Unknown
+            - Runtime
+            - MaximumCPM
+            - MaximumDailyImpressions
+            - MaximumLifetimeImpressions
+            - MediaSize
+            - Pacing
+            - RealtimeBiddingStrategy
+            - KPIOptimization
+            - BidCapping
+        pacingType:
+          type: string
+          enum:
+            - 'Off'
+            - EvenlyOverDay
+            - EvenlyOverRuntime
+            - Ahead
+            - DayParting
+            - Unknown
+      required:
+        - settingType
+        - pacingType
+    DailyBudgetDto:
+      type: object
+      properties:
+        settingType:
+          type: string
+          default: DailyBudget
+          enum:
+            - DailyBudget
+            - TotalBudget
+            - Unknown
+            - Runtime
+            - MaximumCPM
+            - MaximumDailyImpressions
+            - MaximumLifetimeImpressions
+            - MediaSize
+            - Pacing
+            - RealtimeBiddingStrategy
+            - KPIOptimization
+            - BidCapping
+        dailyBudget:
+          type: number
+      required:
+        - settingType
+        - dailyBudget
+    MaximumDailyImpressionsDto:
+      type: object
+      properties:
+        settingType:
+          type: string
+          default: MaximumDailyImpressions
+          enum:
+            - DailyBudget
+            - TotalBudget
+            - Unknown
+            - Runtime
+            - MaximumCPM
+            - MaximumDailyImpressions
+            - MaximumLifetimeImpressions
+            - MediaSize
+            - Pacing
+            - RealtimeBiddingStrategy
+            - KPIOptimization
+            - BidCapping
+        maximumDailyImpressions:
+          type: number
+      required:
+        - settingType
+        - maximumDailyImpressions
+    CreateSettingDto:
+      type: object
+      properties:
+        settings:
+          type: array
+          items:
+            anyOf:
+              - $ref: '#/components/schemas/MaximumCPMDto'
+              - $ref: '#/components/schemas/RealtimeBiddingStrategyDto'
+              - $ref: '#/components/schemas/PacingDto'
+              - $ref: '#/components/schemas/DailyBudgetDto'
+              - $ref: '#/components/schemas/MaximumDailyImpressionsDto'
+      required:
+        - settings
+    CustomerConnectUrlDTO:
+      type: object
+      properties: {}
+    CreateCustomerDto:
+      type: object
+      properties:
+        name:
+          type: string
+          description: The name of the customer.
+          example: John Doe
+      required:
+        - name
+    CreatePinterestAuthDto:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Pinterest auth code returned from the redirect.
+          example: authCode123
+        redirect_uri:
+          type: string
+          description: The Pinterest redirect uri.
+          example: https://example.com/auth/pinterest/callback
+      required:
+        - code
+        - redirect_uri
+    PinterestCreateCredentialDto:
+      type: object
+      properties:
+        access_token:
+          type: string
+          description: The access token of the credential.
+          example: accessToken123
+        refresh_token:
+          type: string
+          description: The refresh token of the credential.
+          example: refreshToken123
+        response_type:
+          type: string
+          description: The response type of the credential.
+          example: bearer
+        token_type:
+          type: string
+          description: The token type of the credential.
+          example: bearer
+        expires_in:
+          type: number
+          description: The expiration time of the access token.
+          example: 3600
+        refresh_token_expires_in:
+          type: number
+          description: The expiration time of the refresh token.
+          example: 7200
+        refresh_token_expires_at:
+          type: number
+          description: The expiration timestamp of the refresh token.
+          example: 1680000000
+        scope:
+          type: string
+          description: The scope of the credential.
+          example: read_write
+      required:
+        - access_token
+        - refresh_token
+        - response_type
+        - token_type
+        - expires_in
+        - refresh_token_expires_in
+        - refresh_token_expires_at
+        - scope
+    GoogleAdsCreateCredentialDto:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: The access token of the credential.
+          example: accessToken123
+        refreshToken:
+          type: string
+          description: The refresh token of the credential.
+          example: refreshToken123
+        expires_in:
+          type: number
+          description: The number in seconds until the access token expires.
+          example: 3600
+      required:
+        - accessToken
+        - refreshToken
+        - expires_in
+    UpdateAdDto:
+      type: object
+      properties: {}
+    CreateGoogleAdsAuthDto:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Google auth code returned from the redirect.
+          example: authCode123
+        redirect_uri:
+          type: string
+          description: The Google redirect uri.
+          example: https://example.com/auth/google/callback
+      required:
+        - code
+        - redirect_uri
+    GoogleAdsAdAccountWrapper:
+      type: object
+      properties:
+        customer:
+          type: string
+      required:
+        - customer
+    CreateFacebookAuthDto:
+      type: object
+      properties:
+        code:
+          type: string
+          description: The Facebook auth code returned from the redirect.
+          example: authCode123
+        redirect_uri:
+          type: string
+          description: The Facebook redirect uri.
+          example: https://example.com/auth/facebook/callback
+      required:
+        - code
+        - redirect_uri
+    FacebookCreateCredentialDto:
+      type: object
+      properties:
+        accessToken:
+          type: string
+          description: The accessToken of the credential.
+          example: accessToken123
+      required:
+        - accessToken
+    FacebookAdAccountWrapper:
+      type: object
+      properties:
+        customer:
+          type: string
+      required:
+        - customer
+    TheTradeDeskCreateCredentialsDto:
+      type: object
+      properties:
+        login:
+          type: string
+          description: The login for the credentials
+          example: user@example.com
+        password:
+          type: string
+          description: The password for the credentials
+          example: password123
+      required:
+        - login
+        - password
