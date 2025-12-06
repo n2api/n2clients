@@ -63,6 +63,7 @@ jobs:
     - name: Copy generated client to axios-client repository
       run: |
         rm -rf clients/axios-client
+        ls -lha
         mv generated ./clients/axios-client
 
     - name: Commit and push changes
