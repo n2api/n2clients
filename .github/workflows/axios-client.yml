@@ -58,17 +58,10 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: axios-client
-        path: generated
-
-    - name: Copy generated client to axios-client repository
-      run: |
-        rm -rf clients/axios-client
-        ls -lha
-        mv generated ./clients/axios-client
 
     - name: Commit and push changes
       run: |
-        git add clients/axios-client
+        git add -a
         git commit -m "Update TypeScript Axios client from commit ${{ github.sha }}" || echo "No changes to commit"
         git push --set-upstream origin ${{ github.sha }}
 
