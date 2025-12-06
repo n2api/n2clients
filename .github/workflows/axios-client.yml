@@ -46,6 +46,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         name: axios-client
+        path: generated
 
     - name: Check out axios-client repository
       uses: actions/checkout@v4
@@ -62,7 +63,7 @@ jobs:
     - name: Copy generated client to axios-client repository
       run: |
         rm -rf clients/axios-client
-        mv axios-client ./clients/axios-client
+        mv generated ./clients/axios-client
 
     - name: Commit and push changes
       run: |
