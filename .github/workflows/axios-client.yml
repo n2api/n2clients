@@ -42,12 +42,6 @@ jobs:
     environment: 'axios-client'
 
     steps:
-    - name: Download clients folder artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: axios-client
-        path: generated
-
     - name: Check out axios-client repository
       uses: actions/checkout@v4
       with:
@@ -59,6 +53,12 @@ jobs:
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
         git checkout -b ${{ github.sha }}
+
+    - name: Download clients folder artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: axios-client
+        path: generated
 
     - name: Copy generated client to axios-client repository
       run: |
