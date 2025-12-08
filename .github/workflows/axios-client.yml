@@ -52,7 +52,7 @@ jobs:
       run: |
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git checkout -b ${{ github.ref_name }}
+        git checkout -b $GITHUB_HEAD_REF
 
     - name: Download clients folder artifact
       uses: actions/download-artifact@v4
@@ -63,14 +63,14 @@ jobs:
       run: |
         git add .
         git commit -m "Update TypeScript Axios client from commit ${{ github.sha }}" || echo "No changes to commit"
-        git push --set-upstream origin ${{ github.ref_name }}
+        git push --set-upstream origin $GITHUB_HEAD_REF
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: Update TypeScript Axios client from commit ${{ github.sha }}
-        branch: ${{ github.ref_name }}
+        branch: $GITHUB_HEAD_REF
         title: Update TypeScript Axios client
         body: This PR updates the TypeScript Axios client with the latest changes.
 
