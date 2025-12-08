@@ -66,11 +66,7 @@ jobs:
         git push --set-upstream origin $GITHUB_HEAD_REF
 
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: Update TypeScript Axios client from commit ${{ github.sha }}
-        branch: $GITHUB_HEAD_REF
-        title: Update TypeScript Axios client
-        body: This PR updates the TypeScript Axios client with the latest changes.
+      run: |
+        gh auth login --with-token < ${{ secrets.REMOTE_REPO_GH_TOKEN }}
+        gh pr create --title "Update TypeScript Axios client from commit ${{ github.sha }}" --body "This PR updates the TypeScript Axios client to reflect the latest changes in the OpenAPI specification." --head $GITHUB_HEAD_REF --base main
 
