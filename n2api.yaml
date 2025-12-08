@@ -3,7 +3,7 @@ paths:
   /auth/login:
     post:
       description: Login with *username* and *password*. Returns an access token.
-      operationId: AuthController_login_4otw64
+      operationId: login
       parameters: []
       requestBody:
         required: true
