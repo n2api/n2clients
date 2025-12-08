@@ -69,6 +69,5 @@ jobs:
       env:
         GH_TOKEN: ${{ secrets.REMOTE_REPO_GH_TOKEN }}
       run: |
-        echo "$GH_TOKEN" | gh auth login --with-token
         gh pr create --title "Update TypeScript Axios client from commit ${{ github.sha }}" --body "This PR updates the TypeScript Axios client to reflect the latest changes in the OpenAPI specification." --head $GITHUB_HEAD_REF --base main
 
