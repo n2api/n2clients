@@ -1,0 +1,72 @@
+name: Axios Client Generation and Push
+
+on:
+  push:
+    branches:
+      - main
+
+
+jobs:
+  generate-axios-client:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Generate TypeScript Axios client
+      run: npm run genclient:typescript-axios
+
+    - name: Run axios client tests
+      run: npm run testclient:typescript-axios
+
+    - name: Upload clients folder as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: axios-client
+        path: clients/axios-client
+
+  push-axios-client:
+    needs: generate-axios-client
+    runs-on: ubuntu-latest
+    environment: 'axios-client'
+
+    steps:
+    - name: Check out axios-client repository
+      uses: actions/checkout@v4
+      with:
+        repository: 'n2api/axios-client'
+        ssh-key: ${{ secrets.DEPLOY_KEY }}
+
+    - name: Configure Git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "github-actions[bot]@users.noreply.github.com"
+        git checkout -b $GITHUB_HEAD_REF
+
+    - name: Download clients folder artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: axios-client
+
+    - name: Commit and push changes
+      run: |
+        git add .
+        git commit -m "Update TypeScript Axios client from commit ${{ github.sha }}" || echo "No changes to commit"
+        git push --set-upstream origin $GITHUB_HEAD_REF
+
+    - name: Create Pull Request
+      env:
+        GH_TOKEN: ${{ secrets.REMOTE_REPO_GH_TOKEN }}
+      run: |
+        gh pr create --title "Update TypeScript Axios client from commit ${{ github.sha }}" --body "This PR updates the TypeScript Axios client to reflect the latest changes in the OpenAPI specification." --head $GITHUB_HEAD_REF --base main
+
