@@ -1,4 +1,4 @@
-import { Client } from '../axios-client/api';
+import { Client, PlatformName, Status, ResourceKind, ChannelKind } from '../axios-client/api';
 import { Configuration } from '../axios-client/configuration';
 
 describe('Axios Client', () => {
@@ -36,4 +36,11 @@ describe('Axios Client', () => {
       expect(client.theTradeDesk).toBeDefined();
     });
   });
+
+  describe('should expose enums properly', () => {
+    expect(PlatformName).toBeDefined();
+    expect(Status).toBeDefined();
+    expect(ResourceKind).toBeDefined();
+    expect(ChannelKind).toBeDefined();
+  })
 });
