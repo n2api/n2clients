@@ -133,13 +133,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
         - name: status
           required: true
           in: query
@@ -147,7 +141,7 @@ paths:
             Status of the Campaigns to return. Example: set status to Running to
             get a list of running Campaigns.
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -155,14 +149,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -464,13 +451,15 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
+        - name: status
+          required: true
+          in: query
+          description: >-
+            Status of the AdSets to return. Example: set status to Running to
+            get a list of running AdSets.
+          schema:
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -478,14 +467,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -607,13 +589,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
         - name: status
           required: true
           in: query
@@ -621,7 +597,7 @@ paths:
             Status of the Ads to return. Example: set status to Running to get a
             list of running Ads
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -629,14 +605,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -1601,13 +1570,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
         - name: status
           required: true
           in: query
@@ -1615,7 +1578,7 @@ paths:
             Status of the Campaigns to return. Example: set status to Running to
             get a list of running Campaigns.
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -1623,14 +1586,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -1734,13 +1690,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
         - name: status
           required: true
           in: query
@@ -1748,7 +1698,7 @@ paths:
             Status of the Campaigns to return. Example: set status to Running to
             get a list of running Campaigns.
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -1756,14 +1706,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -1867,13 +1810,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
         - name: status
           required: true
           in: query
@@ -1881,7 +1818,7 @@ paths:
             Status of the Campaigns to return. Example: set status to Running to
             get a list of running Campaigns.
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -1889,14 +1826,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -2205,13 +2135,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
         - name: status
           required: true
           in: query
@@ -2219,7 +2143,7 @@ paths:
             Status of the Campaigns to return. Example: set status to Running to
             get a list of running Campaigns.
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -2227,14 +2151,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -2287,13 +2204,15 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
+        - name: status
+          required: true
+          in: query
+          description: >-
+            Status of the AdSets to return. Example: set status to Running to
+            get a list of running AdSets.
+          schema:
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -2301,14 +2220,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -2394,14 +2306,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -3085,13 +2990,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
         - name: status
           required: true
           in: query
@@ -3099,7 +2998,7 @@ paths:
             Status of the Campaigns to return. Example: set status to Running to
             get a list of running Campaigns.
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -3107,14 +3006,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -3150,13 +3042,15 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
+        - name: status
+          required: true
+          in: query
+          description: >-
+            Status of the AdSets to return. Example: set status to Running to
+            get a list of running AdSets.
+          schema:
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -3164,14 +3058,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -3211,13 +3098,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - Campaign
-                - AdSet
-                - Ad
-                - Targeting
-                - AdAccount
+              $ref: '#/components/schemas/ResourceKind'
         - name: status
           required: true
           in: query
@@ -3225,7 +3106,7 @@ paths:
             Status of the Ads to return. Example: set status to Running to get a
             list of running Ads
           schema:
-            type: string
+            $ref: '#/components/schemas/Status'
         - name: platforms
           required: true
           in: query
@@ -3233,14 +3114,7 @@ paths:
           schema:
             type: array
             items:
-              type: string
-              enum:
-                - ActiveAgent
-                - Facebook
-                - GoogleAds
-                - TheTradeDesk
-                - Pinterest
-                - LinkedIn
+              $ref: '#/components/schemas/PlatformName'
         - name: customers
           required: true
           in: query
@@ -3288,6 +3162,12 @@ paths:
             report for the month of January 2021.
           schema:
             type: string
+        - name: platform
+          required: true
+          in: query
+          description: The platform for which to generate the report.
+          schema:
+            $ref: '#/components/schemas/PlatformName'
       responses:
         '200':
           description: ''
@@ -3306,6 +3186,8 @@ tags: []
 servers:
   - url: https://api.n2api.io
     description: Production server
+  - url: http://localhost:5001
+    description: Local server
 components:
   securitySchemes:
     bearerAuth:
@@ -3351,12 +3233,47 @@ components:
     FrequencyCappingDto:
       type: object
       properties: {}
+    ChannelKind:
+      type: string
+      enum:
+        - UNKNOWN
+        - MIXED
+        - DOOH
+        - SEARCH
+        - SOCIAL
+        - WEB_BANNER
+        - WEB_VIDEO
+        - AUDIO
     CreateCampaignDto:
       type: object
       properties: {}
     ActiveAgentOrderDto:
       type: object
       properties: {}
+    ResourceKind:
+      type: string
+      enum:
+        - Campaign
+        - AdSet
+        - Ad
+        - Targeting
+        - AdAccount
+    Status:
+      type: string
+      enum:
+        - ACTIVE
+        - RUNNING
+        - PAUSED
+        - UNKNOWN
+    PlatformName:
+      type: string
+      enum:
+        - ActiveAgent
+        - Facebook
+        - GoogleAds
+        - TheTradeDesk
+        - Pinterest
+        - LinkedIn
     UpdateCampaignDto:
       type: object
       properties: {}
