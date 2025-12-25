@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/n2api/axios-client#readme",
   "devDependencies": {
-    "@openapitools/openapi-generator-cli": "^2.25.2",
+    "@openapitools/openapi-generator-cli": "^2.26.0",
     "@types/jest": "^30.0.0"
   },
   "dependencies": {
